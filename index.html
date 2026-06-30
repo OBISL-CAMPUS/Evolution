@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evolution - Personal Development App | Michael Ranuka Gamage (0766 03 03 03)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for Inter and Noto Sans Sinhala -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Sans+Sinhala:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans Sinhala', sans-serif;
+            scroll-behavior: smooth;
+        }
+        
+        /* Custom animated gradients */
+        .gradient-bg {
+            background: linear-gradient(-45deg, #0a0f1d, #14112e, #021f1e, #090d16);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Highly optimized and refined breathing animations */
+        @keyframes liquidOrb {
+            0% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+            50% { border-radius: 30% 60% 70% 30% / 50% 60% 30% 70%; }
+            100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+        }
+
+        @keyframes wavePulseOuter {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            100% { transform: scale(1.8); opacity: 0; }
+        }
+
+        .liquid-orb {
+            animation: liquidOrb 8s ease-in-out infinite;
+            transition: all 4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Custom leaf style matching image_03958b.png blueprint */
+        .leaf-shape {
+            border-radius: 32px 8px 32px 8px;
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.3);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(148, 163, 184, 0.3);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(148, 163, 184, 0.5);
+        }
+    </style>
+</head>
+<body class="gradient-bg text-slate-100 min-h-screen flex flex-col selection:bg-teal-500 selection:text-slate-900 overflow-x-hidden">
+
+    <!-- App Shell Wrapper -->
+    <div class="flex-1 flex flex-col max-w-7xl w-full mx-auto p-3 sm:p-6 lg:p-8">
+        
+        <!-- Header Section -->
+        <header class="flex flex-col sm:flex-row justify-between items-center gap-4 pb-6 border-b border-slate-800/80 mb-6">
+            <div class="flex flex-col text-center sm:text-left">
+                <div class="flex items-center justify-center sm:justify-start gap-2">
+                    <span class="px-2.5 py-1 text-xs font-semibold tracking-wider text-teal-400 uppercase bg-teal-400/10 rounded-full border border-teal-500/20">SPA Platform</span>
+                </div>
+                <h1 id="app-title" class="text-3xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-teal-400 via-indigo-300 to-indigo-400 bg-clip-text text-transparent mt-1">
+                    EVOLUTION
+                </h1>
+                <p id="app-creator" class="text-xs sm:text-sm text-slate-400 mt-1 font-medium tracking-wide">
+                    Personal Development Suite • By Michael Ranuka Gamage (0766 03 03 03)
+                </p>
+            </div>
+            
+            <!-- Dual Language Toggle -->
+            <div class="flex items-center gap-1.5 bg-slate-900/90 p-1.5 rounded-xl border border-slate-800 shadow-xl backdrop-blur-md">
+                <button onclick="switchLanguage('en')" id="lang-en" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 bg-indigo-600 text-white shadow-lg shadow-indigo-500/20">
+                    English
+                </button>
+                <button onclick="switchLanguage('si')" id="lang-si" class="px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 text-slate-400 hover:text-slate-200">
+                    සිංහල
+                </button>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="flex flex-wrap gap-2 mb-8 bg-slate-900/60 p-2 rounded-2xl border border-slate-800/60 backdrop-blur-md">
+            <button onclick="switchTab('personality')" id="tab-personality" class="flex-1 min-w-[120px] px-4 py-3 text-xs sm:text-sm font-semibold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 bg-slate-800/80 text-white border-b-2 border-indigo-500">
+                <svg class="w-4 fill-none stroke-current" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
+                <span data-i18n="nav_personality">Personality Test</span>
+            </button>
+            <button onclick="switchTab('goals')" id="tab-goals" class="flex-1 min-w-[120px] px-4 py-3 text-xs sm:text-sm font-semibold rounded-xl transition-all duration-300 text-slate-400 hover:bg-slate-800/50 flex items-center justify-center gap-2">
+                <svg class="w-4 fill-none stroke-current" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.907c.961 0 1.36 1.248.588 1.81l-3.974 2.89a1 1 0 00-.364 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.364-1.118l-3.974-2.89c-.773-.562-.373-1.81.588-1.81h4.906a1 1 0 00.95-.69l1.519-4.674z" /></svg>
+                <span data-i18n="nav_goals">STAR Goals</span>
+            </button>
+            <button onclick="switchTab('mindfulness')" id="tab-mindfulness" class="flex-1 min-w-[120px] px-4 py-3 text-xs sm:text-sm font-semibold rounded-xl transition-all duration-300 text-slate-400 hover:bg-slate-800/50 flex items-center justify-center gap-2">
+                <svg class="w-4 fill-none stroke-current" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                <span data-i18n="nav_mindfulness">Mindfulness Space</span>
+            </button>
+            <button onclick="switchTab('time')" id="tab-time" class="flex-1 min-w-[120px] px-4 py-3 text-xs sm:text-sm font-semibold rounded-xl transition-all duration-300 text-slate-400 hover:bg-slate-800/50 flex items-center justify-center gap-2">
+                <svg class="w-4 fill-none stroke-current" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <span data-i18n="nav_time">Time Alignment</span>
+            </button>
+            <button onclick="switchTab('habits')" id="tab-habits" class="flex-1 min-w-[120px] px-4 py-3 text-xs sm:text-sm font-semibold rounded-xl transition-all duration-300 text-slate-400 hover:bg-slate-800/50 flex items-center justify-center gap-2">
+                <svg class="w-4 fill-none stroke-current" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138z" /></svg>
+                <span data-i18n="nav_habits">Checklist & Reflect</span>
+            </button>
+        </nav>
+
+        <!-- Main Application Display Panels -->
+        <main class="flex-1 flex flex-col justify-start">
+            
+            <!-- SECTION 1: PERSONALITY TEST -->
+            <section id="panel-personality" class="space-y-6 animate-fadeIn">
+                <div class="bg-slate-900/40 border border-slate-800 p-6 rounded-2xl backdrop-blur-md">
+                    <h2 class="text-2xl font-bold text-teal-400 mb-2" data-i18n="pers_title">Identify Your Growth Coordinates</h2>
+                    <p class="text-slate-400 text-sm sm:text-base mb-6" data-i18n="pers_desc">Explore structural habits, responses, and behaviors to extract high-precision developmental diagnostics and custom targets.</p>
+                    
+                    <div id="quiz-container" class="space-y-6">
+                        <!-- Questions will inject dynamically here -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: STAR GOAL PLANNER -->
+            <section id="panel-goals" class="space-y-6 hidden animate-fadeIn">
+                
+                <!-- Visual STAR Framework Blueprint Cards replicating image_03958b.png -->
+                <div class="bg-slate-950/80 border border-slate-800 rounded-2xl p-6 shadow-2xl overflow-hidden relative">
+                    <!-- Framework Header -->
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-800 pb-4 mb-6">
+                        <div>
+                            <h3 class="text-xl font-extrabold tracking-tight text-white flex items-center gap-2">
+                                <span class="text-amber-400 text-2xl">★</span> STAR Method for Goals By MRG
+                            </h3>
+                            <p class="text-slate-400 text-xs mt-0.5">
+                                ඉලක්ක සඳහා STAR ක්‍රමය <!-- Reference Blueprint: image_03958b.png -->
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- 4 Interactive Leaf Cards replicating image_03958b.png exactly -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- S Card: Specific (Green) -->
+                        <div class="bg-slate-900/40 border border-emerald-500/20 p-4 rounded-xl flex flex-col items-center text-center hover:border-emerald-500/40 transition duration-300">
+                            <div class="leaf-shape w-16 h-16 bg-[#00a859] flex items-center justify-center mb-4 shadow-lg shadow-[#00a859]/20">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 8V4m0 0h4M4 4l5 5m11-5V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5v-4m0 4h-4m4 0l-5-5" />
+                                </svg>
+                            </div>
+                            <h4 class="text-lg font-black tracking-wide text-white"><span class="text-emerald-400">S</span>PECIFIC</h4>
+                            <p class="text-sm font-bold text-emerald-400 mt-1">තාර්කික අරමුණ</p>
+                            <p class="text-xs text-slate-400 mt-2 leading-relaxed">Clearly state what you want to construct with structural integrity.</p>
+                        </div>
+
+                        <!-- T Card: Timeline (Gold/Yellow) -->
+                        <div class="bg-slate-900/40 border border-amber-500/20 p-4 rounded-xl flex flex-col items-center text-center hover:border-amber-500/40 transition duration-300">
+                            <div class="leaf-shape w-16 h-16 bg-[#cda000] flex items-center justify-center mb-4 shadow-lg shadow-[#cda000]/20">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                                </svg>
+                            </div>
+                            <h4 class="text-lg font-black tracking-wide text-white"><span class="text-amber-400">T</span>IMELINE</h4>
+                            <p class="text-sm font-bold text-amber-400 mt-1">රළු කාලය</p>
+                            <p class="text-xs text-slate-400 mt-2 leading-relaxed">Establish the rough time boundary and execution path.</p>
+                        </div>
+
+                        <!-- A Card: Actions (Navy Blue) -->
+                        <div class="bg-slate-900/40 border border-blue-500/20 p-4 rounded-xl flex flex-col items-center text-center hover:border-blue-500/40 transition duration-300">
+                            <div class="leaf-shape w-16 h-16 bg-[#003c7d] flex items-center justify-center mb-4 shadow-lg shadow-[#003c7d]/20">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                                </svg>
+                            </div>
+                            <h4 class="text-lg font-black tracking-wide text-white"><span class="text-blue-400">A</span>CTIONS</h4>
+                            <p class="text-sm font-bold text-blue-400 mt-1">කාර්ය සැලසුම</p>
+                            <p class="text-xs text-slate-400 mt-2 leading-relaxed">Break down process into measurable task-lists.</p>
+                        </div>
+
+                        <!-- R Card: Results (Red) -->
+                        <div class="bg-slate-900/40 border border-rose-500/20 p-4 rounded-xl flex flex-col items-center text-center hover:border-rose-500/40 transition duration-300">
+                            <div class="leaf-shape w-16 h-16 bg-[#ed1c24] flex items-center justify-center mb-4 shadow-lg shadow-[#ed1c24]/20">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <h4 class="text-lg font-black tracking-wide text-white"><span class="text-rose-400">R</span>ESULTS</h4>
+                            <p class="text-sm font-bold text-rose-400 mt-1">වර්ධන ප්‍රතිඵල</p>
+                            <p class="text-xs text-slate-400 mt-2 leading-relaxed">Evaluate the developmental output & milestone value.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Left: Interactive STAR Wizard Form -->
+                    <div class="lg:col-span-5 bg-slate-900/40 border border-slate-800 p-6 rounded-2xl backdrop-blur-md flex flex-col justify-between">
+                        <div>
+                            <h2 class="text-2xl font-bold text-indigo-400 mb-2" data-i18n="goal_wiz_title">Interactive STAR Architect</h2>
+                            <p class="text-slate-400 text-sm mb-6" data-i18n="goal_wiz_desc">Convert loose desires into structured, measurable outcomes. Follow the engineered sequence.</p>
+                            
+                            <!-- STAR Wizard Tracker -->
+                            <div class="flex justify-between items-center mb-6">
+                                <span id="wizard-step-indicator" class="text-xs font-semibold text-teal-400 uppercase tracking-widest bg-teal-500/10 px-2.5 py-1 rounded-full border border-teal-500/20">Step 1 of 4</span>
+                                <div class="flex gap-1" id="wizard-dots">
+                                    <div class="w-2.5 h-2.5 rounded-full bg-teal-400"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+                                    <div class="w-2.5 h-2.5 rounded-full bg-slate-700"></div>
+                                </div>
+                            </div>
+
+                            <!-- Interactive Input Panel -->
+                            <div class="min-h-[160px] flex flex-col justify-center">
+                                <label id="wizard-label" class="block text-sm font-semibold text-slate-200 mb-2">S: Specific Goal Formulation</label>
+                                <p id="wizard-subtext" class="text-xs text-slate-400 mb-3">Specify exactly what you want to achieve. Avoid generic descriptions.</p>
+                                <textarea id="wizard-input" class="w-full bg-slate-950/80 border border-slate-800 rounded-xl p-3 text-slate-100 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 outline-none transition-all custom-scrollbar resize-none h-24" placeholder="e.g., I want to master responsive frontend development with Tailwind CSS..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between gap-4 mt-6">
+                            <button id="btn-wiz-prev" onclick="handleWizardPrev()" class="flex-1 py-3 px-4 rounded-xl font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 transition duration-200 text-sm border border-slate-700/50 cursor-pointer disabled:opacity-50" disabled>
+                                Back
+                            </button>
+                            <button id="btn-wiz-next" onclick="handleWizardNext()" class="flex-1 py-3 px-4 rounded-xl font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition duration-200 text-sm shadow-lg shadow-indigo-600/20 cursor-pointer">
+                                Next
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Right: Active Goals List -->
+                    <div class="lg:col-span-7 bg-slate-900/40 border border-slate-800 p-6 rounded-2xl backdrop-blur-md">
+                        <div class="flex justify-between items-center mb-4">
+                            <h2 class="text-xl font-bold text-slate-200" data-i18n="goals_list_title">Your Active Development Blueprint</h2>
+                            <span class="text-xs text-slate-400" id="goal-count-display">0 goals active</span>
+                        </div>
+                        <div id="goals-list-container" class="space-y-4 max-h-[420px] overflow-y-auto pr-1 custom-scrollbar">
+                            <!-- Dynamic Goals Render Here -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 3: MINDFULNESS & MEDITATION PRACTICE -->
+            <section id="panel-mindfulness" class="space-y-6 hidden animate-fadeIn">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Ambient Sound & Breathing Visualizer (Left) -->
+                    <div class="lg:col-span-6 bg-slate-900/40 border border-slate-800 p-6 rounded-2xl backdrop-blur-md flex flex-col justify-between items-center min-h-[480px]">
+                        <div class="w-full text-center">
+                            <h2 class="text-xl font-bold text-emerald-400 mb-1" data-i18n="mind_title">Respiratoric Pacemaker</h2>
+                            <p class="text-xs text-slate-400" data-i18n="mind_desc">Calm nervous system activation. Synchronize with the pulse.</p>
+                        </div>
+
+                        <!-- Dynamic Breathing Bubble - Extensively Refined Animation -->
+                        <div class="relative flex items-center justify-center my-12">
+                            <!-- Outer pulsing glass wave rings -->
+                            <div id="ring-outer-1" class="absolute w-72 h-72 rounded-full border border-teal-500/10 pointer-events-none transition-all duration-1000" style="animation: wavePulseOuter 4s cubic-bezier(0.1, 0.8, 0.3, 1) infinite;"></div>
+                            <div id="ring-outer-2" class="absolute w-60 h-60 rounded-full border border-indigo-500/10 pointer-events-none transition-all duration-1000" style="animation: wavePulseOuter 4s cubic-bezier(0.1, 0.8, 0.3, 1) infinite; animation-delay: 2s;"></div>
+                            
+                            <!-- Main Organic Fluid/Liquid Breathing Bubble -->
+                            <div id="breathing-bubble" class="liquid-orb w-48 h-48 bg-gradient-to-tr from-teal-500/20 to-indigo-500/30 border-2 border-teal-400/50 flex flex-col items-center justify-center text-center shadow-[0_0_50px_rgba(20,184,166,0.15)] transition-all duration-[4000ms] ease-in-out relative backdrop-blur-md">
+                                <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-white/0 rounded-full pointer-events-none"></div>
+                                <span id="breathing-text" class="text-sm font-black tracking-widest text-teal-300 uppercase z-10 drop-shadow-md">Prepare</span>
+                                <span id="breathing-timer" class="text-xs font-mono text-slate-400/80 mt-1 z-10">4s</span>
+                            </div>
+                        </div>
+
+                        <!-- Web Audio Ambient Waves Generator Controller -->
+                        <div class="w-full bg-slate-950/80 border border-slate-800/80 rounded-xl p-4 flex items-center justify-between">
+                            <div class="flex items-center gap-3">
+                                <span class="p-2.5 rounded-lg bg-teal-500/10 text-teal-400">
+                                    <svg class="w-5 h-5 fill-none stroke-current" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" /></svg>
+                                </span>
+                                <div class="text-left">
+                                    <h3 class="text-sm font-semibold" data-i18n="audio_gen_title">Atmospheric Wave Synth</h3>
+                                    <p class="text-[11px] text-slate-400" data-i18n="audio_gen_desc">Native Web Audio Ocean Simulation</p>
+                                </div>
+                            </div>
+                            <button id="btn-ambient-sound" onclick="toggleAmbientSound()" class="px-4 py-2 text-xs font-bold rounded-lg transition-all duration-200 bg-teal-500 hover:bg-teal-400 text-slate-950 hover:shadow-lg hover:shadow-teal-500/20 cursor-pointer">
+                                Play Sound
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Configurable Meditation Timer (Right) -->
+                    <div class="lg:col-span-6 bg-slate-900/40 border border-slate-800 p-6 rounded-2xl backdrop-blur-md flex flex-col justify-between text-center min-h-[480px]">
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-200 mb-1" data-i18n="med_timer_title">Focus Duration Anchor</h2>
+                            <p class="text-xs text-slate-400" data-i18n="med_timer_desc">Anchor attention to silence. Customize threshold session.</p>
+                            
+                            <!-- Timer Presets -->
+                            <div class="flex justify-center gap-2 mt-6">
+                                <button onclick="setMedTimer(2)" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition duration-200 border border-slate-800 bg-slate-950 hover:bg-slate-800 hover:text-slate-200 text-slate-400" id="preset-2">2 Min</button>
+                                <button onclick="setMedTimer(5)" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition duration-200 border border-slate-800 bg-slate-950 hover:bg-slate-800 hover:text-slate-200 text-slate-400" id="preset-5">5 Min</button>
+                                <button onclick="setMedTimer(10)" class="px-3.5 py-1.5 rounded-lg text-xs font-bold transition duration-200 border border-teal-500/30 bg-teal-500/10 text-teal-400" id="preset-10">10 Min</button>
+                            </div>
+                        </div>
+
+                        <!-- Numeric Countdown display -->
+                        <div class="py-8">
+                            <div class="text-6xl sm:text-7xl font-extrabold tracking-tight text-slate-100 font-mono select-none" id="med-display">10:00</div>
+                            <p class="text-xs text-slate-400 uppercase tracking-widest mt-1" id="med-phase-label">Deep Silence Session</p>
+                        </div>
+
+                        <!-- Action Control Panel -->
+                        <div class="flex gap-3 justify-center">
+                            <button id="btn-med-start" onclick="toggleMedTimer()" class="flex-1 max-w-[150px] py-3 rounded-xl font-bold bg-teal-500 text-slate-950 hover:bg-teal-400 transition-all duration-200 shadow-md shadow-teal-500/10 cursor-pointer">
+                                Start Session
+                            </button>
+                            <button id="btn-med-reset" onclick="resetMedTimer()" class="py-3 px-6 rounded-xl font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 transition duration-200 border border-slate-700/50 cursor-pointer">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 4: TIME ALIGNMENT SUITE -->
+            <section id="panel-time" class="space-y-6 hidden animate-fadeIn">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    
+                    <!-- LEFT: 2X2 Interactive Eisenhower Matrix -->
+                    <div class="lg:col-span-8 bg-slate-900/40 border border-slate-800 p-6 rounded-2xl backdrop-blur-md">
+                        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6">
+                            <div>
+                                <h2 class="text-2xl font-bold text-amber-500" data-i18n="time_eisen_title">Eisenhower Priority Matrix</h2>
+                                <p class="text-slate-400 text-xs sm:text-sm" data-i18n="time_eisen_desc">Deconstruct your agenda by Urgency and Importance. Optimize focus direction.</p>
+                            </div>
+                            <div class="flex gap-2 w-full sm:w-auto">
+                                <input type="text" id="matrix-input" class="flex-1 sm:w-60 bg-slate-950/80 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-100 placeholder:text-slate-500 outline-none focus:border-amber-500/50" placeholder="New critical item...">
+                                <select id="matrix-select-quad" class="bg-slate-950 border border-slate-800 rounded-lg px-2 py-1.5 text-xs text-slate-300 outline-none">
+                                    <option value="1">Q1: Do First</option>
+                                    <option value="2">Q2: Schedule</option>
+                                    <option value="3">Q3: Delegate</option>
+                                    <option value="4">Q4: Eliminate</option>
+                                </select>
+                                <button onclick="addMatrixTask()" class="px-3 py-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs cursor-pointer">+</button>
+                            </div>
+                        </div>
+
+                        <!-- 2x2 Matrix Grid Design -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <!-- Q1: Urgent & Important -->
+                            <div class="bg-slate-950/60 border border-red-500/10 rounded-xl p-4 min-h-[180px] flex flex-col justify-between">
+                                <div class="flex justify-between items-center pb-2 border-b border-red-500/20 mb-3">
+                                    <span class="text-xs font-bold tracking-widest text-red-400 uppercase">Q1: Urgent & Important</span>
+                                    <span class="px-1.5 py-0.5 text-[9px] bg-red-400/10 text-red-300 border border-red-400/20 rounded-md">DO NOW</span>
+                                </div>
+                                <div class="flex-1 space-y-2 overflow-y-auto max-h-[140px] custom-scrollbar pr-1" id="quadrant-1-list"></div>
+                            </div>
+
+                            <!-- Q2: Important Not Urgent -->
+                            <div class="bg-slate-950/60 border border-indigo-500/10 rounded-xl p-4 min-h-[180px] flex flex-col justify-between">
+                                <div class="flex justify-between items-center pb-2 border-b border-indigo-500/20 mb-3">
+                                    <span class="text-xs font-bold tracking-widest text-indigo-400 uppercase">Q2: Important / Not Urgent</span>
+                                    <span class="px-1.5 py-0.5 text-[9px] bg-indigo-400/10 text-indigo-300 border border-indigo-400/20 rounded-md">SCHEDULE</span>
+                                </div>
+                                <div class="flex-1 space-y-2 overflow-y-auto max-h-[140px] custom-scrollbar pr-1" id="quadrant-2-list"></div>
+                            </div>
+
+                            <!-- Q3: Urgent Not Important -->
+                            <div class="bg-slate-950/60 border border-amber-500/10 rounded-xl p-4 min-h-[180px] flex flex-col justify-between">
+                                <div class="flex justify-between items-center pb-2 border-b border-amber-500/20 mb-3">
+                                    <span class="text-xs font-bold tracking-widest text-amber-400 uppercase">Q3: Urgent / Not Important</span>
+                                    <span class="px-1.5 py-0.5 text-[9px] bg-amber-400/10 text-amber-300 border border-amber-400/20 rounded-md">DELEGATE</span>
+                                </div>
+                                <div class="flex-1 space-y-2 overflow-y-auto max-h-[140px] custom-scrollbar pr-1" id="quadrant-3-list"></div>
+                            </div>
+
+                            <!-- Q4: Not Urgent Not Important -->
+                            <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4 min-h-[180px] flex flex-col justify-between">
+                                <div class="flex justify-between items-center pb-2 border-b border-slate-800 mb-3">
+                                    <span class="text-xs font-bold tracking-widest text-slate-400 uppercase">Q4: Not Critical</span>
+                                    <span class="px-1.5 py-0.5 text-[9px] bg-slate-800 text-slate-300 border border-slate-700 rounded-md">ELIMINATE</span>
+                                </div>
+                                <div class="flex-1 space-y-2 overflow-y-auto max-h-[140px] custom-scrollbar pr-1" id="quadrant-4-list"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RIGHT: Pomodoro Engine -->
+                    <div class="lg:col-span-4 bg-slate-900/40 border border-slate-800 p-6 rounded-2xl backdrop-blur-md flex flex-col justify-between text-center min-h-[380px]">
+                        <div>
+                            <h2 class="text-xl font-bold text-slate-200 mb-1" data-i18n="pomo_title">Focus Segment Engine</h2>
+                            <p class="text-xs text-slate-400" data-i18n="pomo_desc">Work block structure based on classic productivity sprints.</p>
+                            
+                            <!-- State Indicator Tabs -->
+                            <div class="flex bg-slate-950/80 p-1.5 rounded-xl border border-slate-800/60 mt-6 max-w-[280px] mx-auto">
+                                <button onclick="setPomoMode('work')" id="pomo-mode-work" class="flex-1 py-1 rounded-lg text-xs font-bold transition duration-200 bg-amber-500/20 text-amber-400 border border-amber-500/20">Focus</button>
+                                <button onclick="setPomoMode('break')" id="pomo-mode-break" class="flex-1 py-1 rounded-lg text-xs font-bold transition duration-200 text-slate-400 hover:text-slate-200">Rest Break</button>
+                            </div>
+                        </div>
+
+                        <!-- Big Dynamic Counter Display -->
+                        <div class="py-6">
+                            <div class="text-6xl font-extrabold text-slate-100 tracking-tight font-mono select-none" id="pomo-display">25:00</div>
+                            <span class="inline-block mt-2 px-2 py-0.5 text-[10px] font-semibold text-amber-400 bg-amber-400/10 border border-amber-400/20 rounded" id="pomo-session-badge">Active Sprint</span>
+                        </div>
+
+                        <!-- Operation Controls -->
+                        <div class="flex gap-2">
+                            <button id="btn-pomo-start" onclick="togglePomoTimer()" class="flex-1 py-2.5 rounded-lg font-bold bg-amber-500 text-slate-950 hover:bg-amber-400 transition-all duration-200 shadow-md shadow-amber-500/10 cursor-pointer">
+                                Start
+                            </button>
+                            <button onclick="resetPomoTimer()" class="py-2.5 px-4 rounded-lg font-semibold bg-slate-800 hover:bg-slate-700 text-slate-300 transition duration-200 text-xs border border-slate-700/50 cursor-pointer">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <!-- SECTION 5: HABITS & REFLECTIONS -->
+            <section id="panel-habits" class="space-y-6 hidden animate-fadeIn">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    
+                    <!-- Left Column: Growth Guidelines Reference Checklist -->
+                    <div class="lg:col-span-6 bg-slate-900/40 border border-slate-800 p-6 rounded-2xl backdrop-blur-md">
+                        <div class="mb-6">
+                            <h2 class="text-xl font-bold text-violet-400" data-i18n="habits_title">Growth Checklist</h2>
+                            <p class="text-xs text-slate-400" data-i18n="habits_desc">Refer to these foundational milestones to verify your mental and strategic alignment.</p>
+                        </div>
+
+                        <div id="habits-list-container" class="space-y-3 max-h-[350px] overflow-y-auto pr-1 custom-scrollbar">
+                            <!-- Checklist renders dynamically here -->
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Reflection Area -->
+                    <div class="lg:col-span-6 bg-slate-900/40 border border-slate-800 p-6 rounded-2xl backdrop-blur-md flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h2 class="text-xl font-bold text-slate-200" data-i18n="ref_title">Cognitive Sanctuary</h2>
+                                    <p class="text-xs text-slate-400" data-i18n="ref_desc">Consolidate experiences, actions, and emotional patterns.</p>
+                                </div>
+                                <button onclick="rotateAffirmation()" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 transition duration-200 border border-slate-700/50 cursor-pointer" title="Generate Affirmation">
+                                    <svg class="w-4 h-4 text-violet-400 fill-none stroke-current" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 3v5H16" /></svg>
+                                </button>
+                            </div>
+
+                            <!-- Dynamic Affirmation Block -->
+                            <div class="bg-gradient-to-br from-violet-600/10 to-indigo-600/10 border border-violet-500/20 p-6 rounded-xl text-center">
+                                <span class="text-[10px] font-bold text-violet-400 tracking-wider uppercase bg-violet-500/10 px-2 py-0.5 rounded border border-violet-500/10" data-i18n="ref_aff_badge">Cognitive Catalyst</span>
+                                <p id="affirmation-display" class="italic text-slate-300 text-sm sm:text-base font-semibold mt-4 leading-relaxed min-h-[60px] flex items-center justify-center">
+                                    "I am deliberate with my time and mindful of my focus."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Dynamic Feedback Message Box (No alerts!) -->
+        <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-slate-900 border border-slate-800 px-5 py-3.5 rounded-xl shadow-2xl flex items-center gap-3">
+            <span class="w-2.5 h-2.5 rounded-full bg-teal-500" id="toast-dot"></span>
+            <span id="toast-text" class="text-xs font-medium text-slate-200">System updated successfully</span>
+        </div>
+
+        <!-- Footer Section -->
+        <footer class="mt-12 pt-6 border-t border-slate-900/80 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+            <div>
+                © 2026 EVOLUTION. Designed for Personal Development & High Performance.
+            </div>
+            <div class="flex items-center gap-1.5">
+                <span>Principal Designer:</span>
+                <span class="text-slate-300 font-medium">Michael Ranuka Gamage (0766 03 03 03)</span>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGICAL ENGINE -->
+    <script>
+        // TRANSLATION INDEX FOR ENGLISH & SINHALA
+        const i18n = {
+            en: {
+                nav_personality: "Personality Test",
+                nav_goals: "STAR Goals",
+                nav_mindfulness: "Mindfulness Space",
+                nav_time: "Time Alignment",
+                nav_habits: "Checklist & Reflect",
+                
+                pers_title: "Identify Your Growth Coordinates",
+                pers_desc: "Analyze your internal habits and baseline patterns to extract custom developmental priorities.",
+                pers_submit: "Calculate Personality Coordinates",
+                pers_restart: "Retake Diagnostic Quiz",
+                
+                goal_wiz_title: "Interactive STAR Architect",
+                goal_wiz_desc: "Break down large desires into simple, measurable execution strategies based on the STAR framework (see image_03958b.png). Complete the 4-step interactive wizard.",
+                goals_list_title: "Your Active Blueprint",
+                
+                mind_title: "Respiratoric Pacemaker",
+                mind_desc: "Optimize cardiovascular parameters. Sync with the animated pulse bubble.",
+                audio_gen_title: "Atmospheric Wave Synth",
+                audio_gen_desc: "Web Audio Synthesizer (Zero External Dependencies)",
+                audio_play: "Play Sound",
+                audio_stop: "Mute Sound",
+                
+                med_timer_title: "Focus Duration Anchor",
+                med_timer_desc: "Calm brain activity by committing to silence. Customize session duration below.",
+                
+                time_eisen_title: "Eisenhower Priority Matrix",
+                time_eisen_desc: "Sort incoming inputs into categorical urgency and importance to prevent strategic drift.",
+                pomo_title: "Focus Segment Engine",
+                pomo_desc: "Work blocks based on custom deep work sprints.",
+                
+                habits_title: "Growth Checklist",
+                habits_desc: "Refer to these foundational milestones to verify your mental and strategic alignment.",
+                ref_title: "Cognitive Sanctuary",
+                ref_desc: "Consolidate experiences, actions, and emotional patterns.",
+                ref_aff_badge: "Cognitive Catalyst",
+                ref_log_label: "Current Reflection & Discoveries"
+            },
+            si: {
+                nav_personality: "පෞරුෂත්ව පරීක්ෂණය",
+                nav_goals: "STAR ඉලක්ක",
+                nav_mindfulness: "සිහිකල්පනාව",
+                nav_time: "කාල අනුගතවීම",
+                nav_habits: "පිරික්සුම් ලැයිස්තුව සහ ආවර්ජනය",
+                
+                pers_title: "ඔබේ සංවර්ධන ඛණ්ඩාංක හඳුනා ගන්න",
+                pers_desc: "අභ්‍යන්තර හැසිරීම් සහ පුරුදු විශ්ලේෂණය කර ඔබට ගැලපෙන සංවර්ධන ප්‍රමුඛතා ලබාගන්න.",
+                pers_submit: "පෞරුෂත්ව ඛණ්ඩාංක ගණනය කරන්න",
+                pers_restart: "නැවත පරීක්ෂණය කරන්න",
+                
+                goal_wiz_title: "STAR ඉලක්ක සැලසුම් මාර්ගෝපදේශය",
+                goal_wiz_desc: "විශාල අභිලාෂයන් සරල, මැනිය හැකි ක්‍රියාවලීන් බවට පරිවර්තනය කරන්න (image_03958b.png බලන්න). පියවර 4ක මෙම මාර්ගෝපදේශය අනුගමනය කරන්න.",
+                goals_list_title: "ක්‍රියාකාරී ඉලක්ක සටහන",
+                
+                mind_title: "හුස්ම ගැනීමේ වේග පාලකය",
+                mind_desc: "ස්නායු පද්ධතිය සන්සුන් කරන්න. මෙම සජීවීකරණය සමග ඔබේ හුස්ම සමපාත කරන්න.",
+                audio_gen_title: "සන්සුන් මුහුදු රළ නාදය",
+                audio_gen_desc: "ස්වභාවික ශබ්ද සංස්ලේෂකය (බාහිර සම්බන්ධතා අවශ්‍ය නොවේ)",
+                audio_play: "ශබ්දය ක්‍රියාත්මක කරන්න",
+                audio_stop: "නිශ්ශබ්ද කරන්න",
+                
+                med_timer_title: "භාවනා කාල පාලකය",
+                med_timer_desc: "මනස සන්සුන් කිරීම සඳහා නිශ්චිත කාලයක් තෝරාගෙන අවධානය යොමු කරන්න.",
+                
+                time_eisen_title: "අයිසන්හවර් ප්‍රමුඛතා න්‍යායසය",
+                time_eisen_desc: "කාර්යයන් ඒවායේ හදිසිභාවය සහ වැදගත්කම අනුව වර්ගීකරණය කර කාලය නිවැරදිව පාලනය කරන්න.",
+                pomo_title: "පොමොඩෝරෝ අවධානය යොමු කිරීම",
+                pomo_desc: "නියමිත කාල සීමා අනුව උපරිම ඵලදායිතාව ලබාගැනීම සඳහා පුහුණු වන්න.",
+                
+                habits_title: "පරිණාමීය පිරික්සුම් ලැයිස්තුව",
+                habits_desc: "ඔබේ මානසික සහ උපායමාර්ගික ප්‍රගතිය පරීක්ෂා කිරීම සඳහා මෙම මූලික පියවරයන් අනුගමනය කරන්න.",
+                ref_title: "මනෝවිද්‍යාත්මක ආවර්ජනය",
+                ref_desc: "ඔබ ලැබූ ජයග්‍රහණ සහ ඇතිවූ බාධාවන් මෙහි සටහන් කරන්න.",
+                ref_aff_badge: "ධනාත්මක සිතුවිලි",
+                ref_log_label: "අද දවසේ සිතුවිලි සහ අත්දැකීම්"
+            }
+        };
+
+        // APPLICATION CORE STATE
+        let state = {
+            lang: 'en',
+            activeTab: 'personality',
+            
+            // Personality quiz variables
+            quizAnswers: {},
+            quizCompleted: false,
+            
+            // STAR Goals Array (Synchronized to LocalStorage)
+            goals: JSON.parse(localStorage.getItem('ev_goals')) || [],
+            wizardStep: 1,
+            wizardData: { s: '', t: '', a: '', r: '' },
+            
+            // Eisenhower Matrix list (Synchronized to LocalStorage)
+            matrixTasks: JSON.parse(localStorage.getItem('ev_matrix')) || [
+                { id: 1, text: 'Plan next month development goals', quadrant: 2, completed: false },
+                { id: 2, text: 'Review performance metrics', quadrant: 1, completed: false }
+            ],
+            
+            // Referable Checklist (Synchronized to LocalStorage)
+            checklist: JSON.parse(localStorage.getItem('ev_checklist')) || [
+                { id: 1, text_en: "Establish at least one active STAR Goal", text_si: "අවම වශයෙන් ක්‍රියාකාරී STAR ඉලක්කයක් පිහිටුවීම", completed: false },
+                { id: 2, text_en: "Complete at least one Focus Pomodoro Sprint", text_si: "අවම වශයෙන් එක් පොමොඩෝරෝ අවධානය යොමු කිරීමේ සැසියක් සම්පූර්ණ කිරීම", completed: false },
+                { id: 3, text_en: "Practice 5-10 minutes of Mindfulness / Breathing", text_si: "විනාඩි 5-10ක් සිහිකල්පනාව සහ හුස්ම ගැනීමේ අභ්‍යාසයෙහි නිරත වීම", completed: false },
+                { id: 4, text_en: "Sort and audit tasks inside the Eisenhower Matrix", text_si: "අයිසන්හවර් ප්‍රමුඛතා න්‍යාසයට අනුව කාර්යයන් වර්ගීකරණය කිරීම", completed: false },
+                { id: 5, text_en: "Log reflection notes in the Cognitive Sanctuary", text_si: "මනෝවිද්‍යාත්මක ආවර්ජන දිනපොතෙහි සටහන් ඇතුළත් කිරීම", completed: false },
+                { id: 6, text_en: "Review diagnostic metrics to optimize focus", text_si: "අවධානය වැඩි දියුණු කිරීම සඳහා ප්‍රගති දර්ශක සමාලෝචනය කිරීම", completed: false }
+            ],
+            
+            // Meditation visual and timing values
+            medTimer: null,
+            medTimeLeft: 600, // 10 minutes default
+            medRunning: false,
+            medPhase: 'idle', // idle, breathing, silence
+            breathCycleTimer: null,
+            
+            // Pomodoro variables
+            pomoTimer: null,
+            pomoTimeLeft: 1500, // 25 mins
+            pomoRunning: false,
+            pomoMode: 'work' // work, break
+        };
+
+        // 8 Diagnostic Questions targeting Core Performance Capabilities
+        const personalityQuestions = [
+            {
+                id: 'stress',
+                text_en: "1. How do you respond to high-pressure work blocks or sudden emergencies?",
+                text_si: "1. හදිසි පීඩනයකදී හෝ හදිසි අවස්ථාවකදී ඔබ සාමාන්‍යයෙන් කටයුතු කරන්නේ කෙසේද?",
+                category: 'resilience',
+                options: [
+                    { val: 1, text_en: "Panic sets in, forcing erratic decisions.", text_si: "කලබල වන අතර වැරදි තීරණ ගැනීමට පෙළඹේ." },
+                    { val: 2, text_en: "Procrastinate or delay handling the load.", text_si: "ප්‍රමාද කරන අතර වැඩ මගහැරීමට උත්සාහ කරයි." },
+                    { val: 3, text_en: "Take a methodical breath, adjusting immediate focus.", text_si: "සන්සුන්ව සිතා වැදගත්ම දේට ප්‍රමුඛතාව දෙයි." },
+                    { val: 4, text_en: "Thrive. Apply structured priorities under strict constraints.", text_si: "ඉතා සාර්ථකව පාලනය කරයි, උපරිම ප්‍රතිඵල ගනී." }
+                ]
+            },
+            {
+                id: 'clarity',
+                text_en: "2. How well defined are your high-impact objectives for the next 6-12 months?",
+                text_si: "2. ඉදිරි මාස 6-12 සඳහා ඔබේ ඉලක්ක කොතරම් පැහැදිලිද?",
+                category: 'execution',
+                options: [
+                    { val: 1, text_en: "Non-existent. Moving day-by-day.", text_si: "පැහැදිලි ඉලක්කයක් නොමැත, දිනෙන් දින ජීවත් වේ." },
+                    { val: 2, text_en: "Vague wishes without concrete metrics.", text_si: "සාමාන්‍ය අදහස් තිබුණත් ඒවා මැනිය නොහැක." },
+                    { val: 3, text_en: "Written goals, but lack consistent tracking.", text_si: "ලියා ඇතත්, ප්‍රගතිය ක්‍රමානුකූලව නිරීක්ෂණය නොකරයි." },
+                    { val: 4, text_en: "STAR goals mapped with detailed subtasks and timelines.", text_si: "STAR ක්‍රමයට සැකසූ, ඉතා පැහැදිලි ඉලක්ක සටහනක් ඇත." }
+                ]
+            },
+            {
+                id: 'focus',
+                text_en: "3. When distracted during deep-work execution, how fast do you recover?",
+                text_si: "3. වැඩක් කරන අතරතුර අවධානය වෙනතකට යොමු වුවහොත්, නැවත වැඩට අවධානය යොමු කිරීමට කොපමණ වේලාවක් ගතවේද?",
+                category: 'focus',
+                options: [
+                    { val: 1, text_en: "Lose several hours cycling through notifications.", text_si: "දුරකථන පණිවිඩ ආදිය නිසා පැය කිහිපයක්ම නාස්ති වේ." },
+                    { val: 2, text_en: "Difficulty starting again, feeling fatigue.", text_si: "නැවත ආරම්භ කිරීමට අසීරු වන අතර කම්මැලිකමක් දැනේ." },
+                    { val: 3, text_en: "Takes 10-15 minutes to recalibrate deep concentration.", text_si: "විනාඩි 10-15 අතර කාලයකදී නැවත අවධානය ලබාගනී." },
+                    { val: 4, text_en: "Instantly. Block out noises and enforce high focus.", text_si: "ඉතා වේගයෙන් නැවත සිත එකඟ කරගෙන වැඩ අවසන් කරයි." }
+                ]
+            },
+            {
+                id: 'self_awareness',
+                text_en: "4. How often do you step back to analyze your emotional triggers and mental fatigue?",
+                text_si: "4. ඔබේ කෝපය, ආතතිය හෝ මානසික විඩාව ගැන ඔබ කොතරම් ස්වයං-විශ්ලේෂණයක් සිදු කරනවාද?",
+                category: 'awareness',
+                options: [
+                    { val: 1, text_en: "Rarely. Let responses run on autopilot.", text_si: "ඉතා කලාතුරකින්. මනස ක්‍රියාත්මක වන්නේ ස්වයංක්‍රීයවයි." },
+                    { val: 2, text_en: "Only after a major failure or conflict occurs.", text_si: "විශාල බිඳවැටීමකදී හෝ ගැටුමකදී පමණක් සිතා බලයි." },
+                    { val: 3, text_en: "Weekly. Reflect during weekend blocks.", text_si: "සතිපතා. සති අන්තයේ මදක් සිතා බලයි." },
+                    { val: 4, text_en: "Daily. Enforce silent self-assessment and structural logs.", text_si: "දිනපතා. දිනපොතක සටහන් කරමින් ස්වයං-විශ්ලේෂණයක් කරයි." }
+                ]
+            },
+            {
+                id: 'delegation',
+                text_en: "5. How do you delegate work when facing an overloaded schedule?",
+                text_si: "5. අධික වැඩ ප්‍රමාණයක් ඇති විට කාර්යයන් අන් අයට පැවරීම ඔබ සිදු කරන්නේ කෙසේද?",
+                category: 'execution',
+                options: [
+                    { val: 1, text_en: "Avoid it entirely. Do everything poorly.", text_si: "අන් අයට නොපවරයි. සියලු දේ තනිවම කර අසාර්ථක වේ." },
+                    { val: 2, text_en: "Delegate late, causing bottleneck crises.", text_si: "ප්‍රමාද වී පවරයි, එමගින් ගැටලු තවත් වැඩි වේ." },
+                    { val: 3, text_en: "Delegate non-vital tasks with loose follow-up.", text_si: "වැදගත් නොවන වැඩ අන් අයට පවරා මධ්‍යස්ථව සොයා බලයි." },
+                    { val: 4, text_en: "Methodically triage tasks and delegate with clear metrics.", text_si: "වැඩ වර්ගීකරණය කර වගකීමෙන් සහ පැහැදිලිව පවරයි." }
+                ]
+            },
+            {
+                id: 'resilience_fail',
+                text_en: "6. When a highly anticipated project fails completely, what is your next action?",
+                text_si: "6. ඔබ බෙහෙවින් බලාපොරොත්තු වූ වැඩක් සම්පූර්ණයෙන්ම අසාර්ථක වුවහොත්, ඊළඟට කරන්නේ කුමක්ද?",
+                category: 'resilience',
+                options: [
+                    { val: 1, text_en: "Abandon development entirely; feel helpless.", text_si: "උත්සාහය සම්පූර්ණයෙන්ම අත්හැර දමා මානසිකව වැටේ." },
+                    { val: 2, text_en: "Blame structural factors or other collaborators.", text_si: "අන් අයට හෝ වාතාවරණයට දොස් පවරයි." },
+                    { val: 3, text_en: "Analyze the breakdown and commit to a general pivot.", text_si: "වැරදුණු තැන් විශ්ලේෂණය කර නැවත උත්සාහ කරයි." },
+                    { val: 4, text_en: "Execute a post-mortem, document errors, immediately restart.", text_si: "වැරදි ලේඛනගත කර, පාඩම් උගෙන වහාම නැවත පටන් ගනී." }
+                ]
+            },
+            {
+                id: 'schedule',
+                text_en: "7. How structured is your average calendar day?",
+                text_si: "7. ඔබගේ සාමාන්‍ය දින චර්යාව කෙතරම් සැලසුම් සහගතද?",
+                category: 'focus',
+                options: [
+                    { val: 1, text_en: "Reactive chaos. Completely drift to demand.", text_si: "අතිශය අවුල් සහගතයි, එසැණින් ලැබෙන දේ පමණක් කරයි." },
+                    { val: 2, text_en: "Basic to-do list, which quickly gets abandoned.", text_si: "සරල ලැයිස්තුවක් ඇතත් එය ක්‍රියාත්මක නොවේ." },
+                    { val: 3, text_en: "Time blocking applied to critical milestones.", text_si: "ප්‍රධාන කාර්යයන් සඳහා වේලාවන් වෙන්කර ඇත." },
+                    { val: 4, text_en: "Proactive, synchronized blocks protecting core focus intervals.", text_si: "දවස සම්පූර්ණයෙන්ම කාල සීමාවන්ට අනුව බෙදා සැලසුම් කර ඇත." }
+                ]
+            },
+            {
+                id: 'empathy',
+                text_en: "8. When someone is explaining a perspective different from yours, how do you listen?",
+                text_si: "8. යමෙකු ඔබගේ මතයට වඩා වෙනස් අදහසක් ප්‍රකාශ කරන විට ඔබ එයට සවන් දෙන්නේ කෙසේද?",
+                category: 'awareness',
+                options: [
+                    { val: 1, text_en: "Interrupt aggressively to validate my view.", text_si: "මධ්‍යයේ බාධා කර මගේ මතයම තහවුරු කිරීමට උත්සාහ කරයි." },
+                    { val: 2, text_en: "Pretend to listen while assembling my counterargument.", text_si: "සවන් දෙනවා සේ පෙන්වමින් මගේ පිළිතුර සූදානම් කරයි." },
+                    { val: 3, text_en: "Wait for them to finish, then share my counter-rationality.", text_si: "ඔවුන් පවසා අවසන් වන තෙක් සිට මගේ මතය පවසයි." },
+                    { val: 4, text_en: "Listen deeply to extract their premise and mental model.", text_si: "ඔවුන්ගේ දෘෂ්ටිකෝණය සහ එයට හේතු ගැඹුරින් තේරුම් ගනී." }
+                ]
+            }
+        ];
+
+        // WEB AUDIO AMBIENT SOUND GENERATOR (No external files)
+        let audioCtx = null;
+        let waveNode = null;
+        let mainGain = null;
+
+        function toggleAmbientSound() {
+            const btn = document.getElementById('btn-ambient-sound');
+            if (waveNode) {
+                stopWaves();
+                btn.textContent = state.lang === 'en' ? 'Play Sound' : 'ශබ්දය ක්‍රියාත්මක කරන්න';
+                btn.classList.remove('bg-red-500', 'hover:bg-red-400', 'text-white');
+                btn.classList.add('bg-teal-500', 'hover:bg-teal-400', 'text-slate-950');
+                showToast(state.lang === 'en' ? "Ambient Wave Synthesizer Disabled" : "මුහුදු රළ නාදය අක්‍රිය කරන ලදී");
+            } else {
+                try {
+                    startWaves();
+                    btn.textContent = state.lang === 'en' ? 'Mute Sound' : 'නිශ්ශබ්ද කරන්න';
+                    btn.classList.remove('bg-teal-500', 'hover:bg-teal-400', 'text-slate-950');
+                    btn.classList.add('bg-red-500', 'hover:bg-red-400', 'text-white');
+                    showToast(state.lang === 'en' ? "Atmospheric ocean simulation synthesis active" : "මුහුදු රළ නාද සංස්ලේෂණය සක්‍රියයි");
+                } catch (e) {
+                    showToast("Audio API initialization failed.");
+                }
+            }
+        }
+
+        function startWaves() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const bufferSize = 4 * audioCtx.sampleRate;
+            const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const output = noiseBuffer.getChannelData(0);
+            
+            let b0=0, b1=0, b2=0, b3=0, b4=0, b5=0, b6=0;
+            for (let i = 0; i < bufferSize; i++) {
+                const white = Math.random() * 2 - 1;
+                b0 = 0.99886 * b0 + white * 0.0555179;
+                b1 = 0.99332 * b1 + white * 0.0750759;
+                b2 = 0.96900 * b2 + white * 0.1538520;
+                b3 = 0.86650 * b3 + white * 0.3104856;
+                b4 = 0.55000 * b4 + white * 0.5329522;
+                b5 = -0.7616 * b5 - white * 0.0168980;
+                output[i] = b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362;
+                output[i] *= 0.12;
+                b6 = white * 0.115926;
+            }
+
+            const noiseSource = audioCtx.createBufferSource();
+            noiseSource.buffer = noiseBuffer;
+            noiseSource.loop = true;
+
+            const filterNode = audioCtx.createBiquadFilter();
+            filterNode.type = 'lowpass';
+            filterNode.frequency.value = 350;
+            filterNode.Q.value = 1.2;
+
+            const lfo = audioCtx.createOscillator();
+            lfo.frequency.value = 0.12;
+            
+            const lfoGain = audioCtx.createGain();
+            lfoGain.gain.value = 220;
+
+            lfo.connect(lfoGain);
+            lfoGain.connect(filterNode.frequency);
+
+            mainGain = audioCtx.createGain();
+            mainGain.gain.setValueAtTime(0.0, audioCtx.currentTime);
+            mainGain.gain.linearRampToValueAtTime(0.4, audioCtx.currentTime + 2);
+
+            noiseSource.connect(filterNode);
+            filterNode.connect(mainGain);
+            mainGain.connect(audioCtx.destination);
+
+            lfo.start();
+            noiseSource.start();
+
+            waveNode = { noiseSource, lfo, lfoGain, filterNode };
+        }
+
+        function stopWaves() {
+            if (waveNode) {
+                try {
+                    mainGain.gain.setValueAtTime(mainGain.gain.value, audioCtx.currentTime);
+                    mainGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.8);
+                    const sourceToStop = waveNode.noiseSource;
+                    const oscToStop = waveNode.lfo;
+                    setTimeout(() => {
+                        try {
+                            sourceToStop.stop();
+                            oscToStop.stop();
+                        } catch (e) {}
+                    }, 900);
+                } catch (err) {}
+                waveNode = null;
+            }
+        }
+
+        function playChime() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
+                
+                gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 1.6);
+            } catch (e) {}
+        }
+
+        // NAVIGATION CONTROL SYSTEM
+        function switchTab(tabId) {
+            state.activeTab = tabId;
+            
+            const tabs = ['personality', 'goals', 'mindfulness', 'time', 'habits'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tabId) {
+                    btn.className = "flex-1 min-w-[120px] px-4 py-3 text-xs sm:text-sm font-semibold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 bg-slate-800/80 text-white border-b-2 border-indigo-500";
+                } else {
+                    btn.className = "flex-1 min-w-[120px] px-4 py-3 text-xs sm:text-sm font-semibold rounded-xl transition-all duration-300 text-slate-400 hover:bg-slate-800/50 flex items-center justify-center gap-2";
+                }
+            });
+
+            tabs.forEach(t => {
+                const panel = document.getElementById(`panel-${t}`);
+                if (t === tabId) {
+                    panel.classList.remove('hidden');
+                } else {
+                    panel.classList.add('hidden');
+                }
+            });
+
+            renderCurrentTab();
+        }
+
+        // SYSTEM TRANSLATION AND RENDERING RUNTIME
+        function switchLanguage(lang) {
+            state.lang = lang;
+            
+            const btnEn = document.getElementById('lang-en');
+            const btnSi = document.getElementById('lang-si');
+            
+            if (lang === 'en') {
+                btnEn.className = "px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 bg-indigo-600 text-white shadow-lg shadow-indigo-500/20";
+                btnSi.className = "px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 text-slate-400 hover:text-slate-200";
+            } else {
+                btnSi.className = "px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 bg-indigo-600 text-white shadow-lg shadow-indigo-500/20";
+                btnEn.className = "px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-300 text-slate-400 hover:text-slate-200";
+            }
+
+            document.querySelectorAll('[data-i18n]').forEach(element => {
+                const key = element.getAttribute('data-i18n');
+                if (i18n[lang][key]) {
+                    element.textContent = i18n[lang][key];
+                }
+            });
+
+            const inputs = {
+                'matrix-input': { en: "New critical item...", si: "නව වැදගත් කරුණක්..." },
+                'reflection-log': { en: "What are your insights, friction points, and realignments today?", si: "අද දවසේ ඔබ ලැබූ වැදගත් අවබෝධයන් සහ මුහුණ දුන් ගැටලු මොනවාද?" }
+            };
+
+            for (let id in inputs) {
+                const el = document.getElementById(id);
+                if (el) el.placeholder = inputs[id][lang];
+            }
+
+            renderCurrentTab();
+            updateAppTitleAndDetails();
+        }
+
+        function updateAppTitleAndDetails() {
+            const titleEl = document.getElementById('app-title');
+            const creatorEl = document.getElementById('app-creator');
+            if (state.lang === 'en') {
+                titleEl.textContent = 'EVOLUTION';
+                creatorEl.textContent = 'Personal Development Suite • By Michael Ranuka Gamage (0766 03 03 03)';
+            } else {
+                titleEl.textContent = 'EVOLUTION (පරිණාමය)';
+                creatorEl.textContent = 'පුද්ගල සංවර්ධන පද්ධතිය • මයිකල් රනුක ගමගේ (0766 03 03 03) විසින් නිර්මාණය කරන ලදී';
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const text = document.getElementById('toast-text');
+            text.textContent = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 4000);
+        }
+
+        // RENDER CENTRAL ROUTER
+        function renderCurrentTab() {
+            switch (state.activeTab) {
+                case 'personality':
+                    renderPersonality();
+                    break;
+                case 'goals':
+                    renderGoalsWizard();
+                    renderGoalsList();
+                    break;
+                case 'mindfulness':
+                    updateTimerDisplay();
+                    break;
+                case 'time':
+                    renderMatrix();
+                    updatePomoDisplay();
+                    break;
+                case 'habits':
+                    renderHabits();
+                    break;
+            }
+        }
+
+
+        // ==========================================
+        // MODULE 1: PERSONALITY TEST IMPLEMENTATION
+        // ==========================================
+        function renderPersonality() {
+            const container = document.getElementById('quiz-container');
+            if (state.quizCompleted) {
+                renderQuizResults(container);
+                return;
+            }
+
+            let html = `<div class="space-y-8">`;
+            
+            personalityQuestions.forEach((q, idx) => {
+                const selectedVal = state.quizAnswers[q.id];
+                html += `
+                    <div class="bg-slate-950/40 p-5 rounded-xl border border-slate-800/80 hover:border-slate-700/60 transition duration-200">
+                        <h4 class="text-sm sm:text-base font-semibold text-slate-200 mb-4">${state.lang === 'en' ? q.text_en : q.text_si}</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                `;
+
+                q.options.forEach(opt => {
+                    const isSelected = selectedVal === opt.val;
+                    const optClass = isSelected 
+                        ? 'border-indigo-500 bg-indigo-500/10 text-indigo-300' 
+                        : 'border-slate-800 bg-slate-950/80 hover:bg-slate-800 hover:text-slate-100 text-slate-400';
+                    
+                    html += `
+                        <button onclick="selectQuizOption('${q.id}', ${opt.val})" class="text-left p-3.5 rounded-lg text-xs sm:text-sm border transition-all duration-200 font-medium ${optClass} flex items-center gap-3 cursor-pointer">
+                            <span class="w-5 h-5 rounded-full border border-current flex items-center justify-center text-[10px] shrink-0 font-bold ${isSelected ? 'bg-indigo-500 text-slate-950' : ''}">
+                                ${opt.val}
+                            </span>
+                            <span>${state.lang === 'en' ? opt.text_en : opt.text_si}</span>
+                        </button>
+                    `;
+                });
+
+                html += `</div></div>`;
+            });
+
+            const allAnswered = Object.keys(state.quizAnswers).length === personalityQuestions.length;
+            html += `
+                <div class="pt-4 flex justify-end">
+                    <button onclick="submitQuiz()" ${allAnswered ? '' : 'disabled'} class="w-full sm:w-auto py-3.5 px-8 rounded-xl font-bold bg-gradient-to-r from-teal-500 to-indigo-600 text-slate-950 hover:text-white transition-all duration-300 shadow-xl disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer">
+                        ${state.lang === 'en' ? 'Compute Diagnostic Analysis' : 'ප්‍රතිඵල විශ්ලේෂණය ලබාගන්න'}
+                    </button>
+                </div>
+            </div>`;
+
+            container.innerHTML = html;
+        }
+
+        function selectQuizOption(qId, val) {
+            state.quizAnswers[qId] = val;
+            renderPersonality();
+        }
+
+        function submitQuiz() {
+            state.quizCompleted = true;
+            renderCurrentTab();
+            playChime();
+        }
+
+        function restartQuiz() {
+            state.quizAnswers = {};
+            state.quizCompleted = false;
+            renderCurrentTab();
+        }
+
+        function renderQuizResults(container) {
+            let categories = { resilience: 0, execution: 0, focus: 0, awareness: 0 };
+            let counts = { resilience: 0, execution: 0, focus: 0, awareness: 0 };
+
+            personalityQuestions.forEach(q => {
+                const answer = state.quizAnswers[q.id] || 1;
+                categories[q.category] += answer;
+                counts[q.category]++;
+            });
+
+            let percentages = {};
+            for (let k in categories) {
+                percentages[k] = Math.round(((categories[k] / (counts[k] * 4)) * 100));
+            }
+
+            const resultFeedback = {
+                en: {
+                    resilience: percentages.resilience > 70 
+                        ? "Elite emotional immunity. Continue applying structural logs during crisis pivot points."
+                        : "Vulnerable to sudden load shocks. Action target: Integrate 5-minute deep silent pacemaking blocks inside stressful work intervals.",
+                    execution: percentages.execution > 70 
+                        ? "Strong tactical execution capacity. Keep refining clear metrics across multi-task sprints."
+                        : "Strategic drift detected. Target action: Map out next milestone using our STAR Architect planner.",
+                    focus: percentages.focus > 70 
+                        ? "Excellent focus protection blocks. Protect these slots during prime circadian intervals."
+                        : "High distraction leaking. Target action: Commit to 1 dedicated Pomodoro deep sprint block daily.",
+                    awareness: percentages.awareness > 70 
+                        ? "Exceptional situational empathy and self-awareness. Document cognitive habits weekly."
+                        : "Autopilot reactions dominant. Action target: Update the Cognitive Sanctuary journal log at day end."
+                },
+                si: {
+                    resilience: percentages.resilience > 70 
+                        ? "ඉතා විශිෂ්ට මානසික ඔරොත්තු දීමේ හැකියාවක් ඇත. ගැටලුකාරී අවස්ථාවලදී සන්සුන්ව කටයුතු කරන්න."
+                        : "හදිසි පීඩන හමුවේ මනස සැලේ. නිර්දේශය: ආතති සහගත අවස්ථාවන්හිදී විනාඩි 5ක සන්සුන් හුස්ම ගැනීමේ අභ්‍යාසය කරන්න.",
+                    execution: percentages.execution > 70 
+                        ? "කාර්යයන් නිවැරදිව ක්‍රියාත්මක කිරීමේ හැකියාව ඉහළයි. සැලසුම් සහගතව කටයුතු කරන්න."
+                        : "ඉලක්කවලින් බැහැර වීමේ ප්‍රවණතාවක් ඇත. නිර්දේශය: අපගේ STAR ඉලක්ක සැලසුම් මෙවලම භාවිතා කර අලුත් ඉලක්කයක් සකසන්න.",
+                    focus: percentages.focus > 70 
+                        ? "අවධානය එකඟ කර ගැනීමේ හැකියාව ඉතා ඉහළයි. මෙය තවදුරටත් වර්ධනය කරන්න."
+                        : "අවධානය බිඳවැටීම නිතර සිදුවේ. නිර්දේශය: දිනපතා අවම වශයෙන් පොමොඩෝරෝ ක්‍රමයට එක් කාර්යයක්වත් අවසන් කිරීමට පුරුදු වන්න.",
+                    awareness: percentages.awareness > 70 
+                        ? "ස්වයං අවබෝධය සහ සහකම්පනය ඉතා හොඳ මට්ටමක පවතී. සතිපතා මනස ආවර්ජනය කරන්න."
+                        : "තීරණ ගැනීමේදී ස්වයං අවබෝධය මදි. නිර්දේශය: දවස අවසානයේ අපගේ මනෝවිද්‍යාත්මක ආවර්ජන ලොගය සටහන් කරන්න."
+                }
+            };
+
+            const titles = {
+                en: { resilience: "Resilience & Adaptability", execution: "Execution Strategy", focus: "Attention Architecture", awareness: "Self-Awareness & Empathy" },
+                si: { resilience: "මානසික ඔරොත්තු දීම", execution: "ක්‍රියාත්මක කිරීමේ උපාය", focus: "අවධානය සහ ඒකාග්‍රතාවය", awareness: "ස්වයං අවබෝධය සහ සහකම්පනය" }
+            };
+
+            let html = `
+                <div class="space-y-6">
+                    <div class="flex justify-between items-center pb-4 border-b border-slate-800">
+                        <h3 class="text-xl font-bold text-teal-400">
+                            ${state.lang === 'en' ? 'Performance Coordinates Decoded' : 'ඔබේ ප්‍රගති විශ්ලේෂණ වාර්තාව'}
+                        </h3>
+                        <button onclick="restartQuiz()" class="px-3.5 py-1.5 rounded-lg text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold border border-slate-700 cursor-pointer">
+                            ${state.lang === 'en' ? 'Retake Diagnostic Quiz' : 'නැවත පරීක්ෂණය කරන්න'}
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            `;
+
+            for (let key in percentages) {
+                const val = percentages[key];
+                const color = val > 70 ? 'bg-teal-500' : val > 40 ? 'bg-indigo-500' : 'bg-rose-500';
+                const textCol = val > 70 ? 'text-teal-400' : val > 40 ? 'text-indigo-400' : 'text-rose-400';
+                
+                html += `
+                    <div class="bg-slate-950/60 p-5 rounded-xl border border-slate-800 flex flex-col justify-between">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-xs font-bold uppercase tracking-wider text-slate-300">${titles[state.lang][key]}</span>
+                                <span class="text-sm font-extrabold ${textCol}">${val}%</span>
+                            </div>
+                            <div class="w-full bg-slate-900 h-2.5 rounded-full overflow-hidden mb-4">
+                                <div class="${color} h-2.5 rounded-full" style="width: ${val}%"></div>
+                            </div>
+                        </div>
+                        <p class="text-xs sm:text-sm text-slate-400 leading-relaxed italic bg-slate-900/40 p-3 rounded-lg border border-slate-800/50">
+                            ${resultFeedback[state.lang][key]}
+                        </p>
+                    </div>
+                `;
+            }
+
+            html += `
+                    </div>
+                    
+                    <div class="bg-indigo-950/20 border border-indigo-500/20 p-5 rounded-xl">
+                        <h4 class="text-sm font-bold text-indigo-400 uppercase tracking-widest mb-2">
+                            ${state.lang === 'en' ? 'Primary Focus Vector' : 'ප්‍රධාන සංවර්ධන උපදෙස'}
+                        </h4>
+                        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                            ${state.lang === 'en' 
+                              ? 'Your metrics recommend configuring a STAR goal detailing Focus Allocation first, and incorporating three 25-minute Pomodoro intervals into your daily calendar routine.' 
+                              : 'ඔබේ දත්ත විශ්ලේෂණයට අනුව, පළමුව STAR ඉලක්කයක් සකසා, දිනපතා අවම වශයෙන් විනාඩි 25ක පොමොඩෝරෝ අවධානය යොමු කිරීමේ අභ්‍යාස තුනක් ක්‍රියාත්මක කරන්න.'}
+                        </p>
+                    </div>
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // ==========================================
+        // MODULE 2: STAR GOAL PLANNER WIZARD (STAR Method replaces SMART)
+        // ==========================================
+        const wizardStepsInfo = [
+            {
+                step: 1,
+                label_en: "S: Specific Target Goal (තාර්කික අරමුණ)",
+                label_si: "S: Specific Target Goal (තාර්කික අරමුණ)",
+                subtext_en: "Define the logical target clearly. Avoid vague wishes.",
+                subtext_si: "ඔබ ළඟා කර ගැනීමට බලාපොරොත්තු වන තාර්කික අරමුණ ඉතා පැහැදිලිව සටහන් කරන්න.",
+                placeholder_en: "e.g., I want to master responsive UI design and premium coding principles...",
+                placeholder_si: "උදා: මට උසස් මට්ටමේ පරිගණක මෘදුකාංග සැලසුම්කරණය පිළිබඳව හැදෑරීමට අවශ්‍යයි...",
+                key: 's'
+            },
+            {
+                step: 2,
+                label_en: "T: Timeline Boundaries (රළු කාලය)",
+                label_si: "T: Timeline Boundaries (රළු කාලය)",
+                subtext_en: "State the rough duration and time limitations of your sprint.",
+                subtext_si: "මෙම කාර්යය සම්පූර්ණ කිරීම සඳහා ගතවන රළු කාල සීමාව ඇතුළත් කරන්න.",
+                placeholder_en: "e.g., Commit to a 6-month intensive training program finishing by Q4...",
+                placeholder_si: "උදා: ඉදිරි මාස 6ක කාල සීමාවක් තුළදී මෙම ඉලක්කය සාක්ෂාත් කර ගැනීමට සැලසුම් කිරීම...",
+                key: 't'
+            },
+            {
+                step: 3,
+                label_en: "A: Actions & Task List (කාර්ය සැලසුම)",
+                label_si: "A: Actions & Task List (කාර්ය සැලසුම)",
+                subtext_en: "Which tactical process parameters or habits will you enforce?",
+                subtext_si: "මෙම අරමුණ උදෙසා ඔබ දිනපතා ක්‍රියාත්මක කරන කාර්ය සැලසුම කුමක්ද?",
+                placeholder_en: "e.g., Code for 45 minutes daily using the Pomodoro segment engine...",
+                placeholder_si: "උදා: දිනපතා විනාඩි 45ක් මෙම ඉගෙනුම් කටයුත්ත සඳහා වෙන් කිරීම...",
+                key: 'a'
+            },
+            {
+                step: 4,
+                label_en: "R: Results & Growth Output (වර්ධන ප්‍රතිඵල)",
+                label_si: "R: Results & Growth Output (වර්ධන ප්‍රතිඵල)",
+                subtext_en: "What real-world growth outcome or evidence proves success?",
+                subtext_si: "ඔබේ සාර්ථකත්වය මැන බැලීම සඳහා ලැබෙන වර්ධන ප්‍රතිඵල මොනවාද?",
+                placeholder_en: "e.g., Deploying 4 fully functional responsive SPA templates live...",
+                placeholder_si: "උදා: සාර්ථකව නිම කරන ලද පද්ධති සැකිලි 4ක් සජීවීව අන්තර්ජාලයට මුදා හැරීම...",
+                key: 'r'
+            }
+        ];
+
+        function renderGoalsWizard() {
+            const currentStepData = wizardStepsInfo[state.wizardStep - 1];
+            
+            const indicator = document.getElementById('wizard-step-indicator');
+            indicator.textContent = state.lang === 'en' 
+                ? `Step ${state.wizardStep} of 4` 
+                : `පියවර 4න් ${state.wizardStep}`;
+
+            const dotsContainer = document.getElementById('wizard-dots');
+            let dotsHtml = '';
+            for (let i = 1; i <= 4; i++) {
+                const active = i === state.wizardStep ? 'bg-teal-400 scale-110 shadow-md shadow-teal-500/20' : i < state.wizardStep ? 'bg-indigo-500' : 'bg-slate-700';
+                dotsHtml += `<div class="w-2.5 h-2.5 rounded-full transition-all duration-300 ${active}"></div>`;
+            }
+            dotsContainer.innerHTML = dotsHtml;
+
+            const label = document.getElementById('wizard-label');
+            const subtext = document.getElementById('wizard-subtext');
+            const input = document.getElementById('wizard-input');
+
+            label.textContent = state.lang === 'en' ? currentStepData.label_en : currentStepData.label_si;
+            subtext.textContent = state.lang === 'en' ? currentStepData.subtext_en : currentStepData.subtext_si;
+            input.placeholder = state.lang === 'en' ? currentStepData.placeholder_en : currentStepData.placeholder_si;
+            
+            input.value = state.wizardData[currentStepData.key] || '';
+
+            const prevBtn = document.getElementById('btn-wiz-prev');
+            const nextBtn = document.getElementById('btn-wiz-next');
+
+            prevBtn.disabled = state.wizardStep === 1;
+            prevBtn.textContent = state.lang === 'en' ? 'Back' : 'පසුපසට';
+
+            if (state.wizardStep === 4) {
+                nextBtn.textContent = state.lang === 'en' ? 'Formulate STAR Goal' : 'STAR ඉලක්කය සාදන්න';
+                nextBtn.className = "flex-1 py-3 px-4 rounded-xl font-semibold bg-teal-500 text-slate-950 hover:bg-teal-400 transition duration-200 text-sm shadow-lg shadow-teal-600/20 cursor-pointer";
+            } else {
+                nextBtn.textContent = state.lang === 'en' ? 'Next' : 'ඉදිරියට';
+                nextBtn.className = "flex-1 py-3 px-4 rounded-xl font-semibold bg-indigo-600 hover:bg-indigo-500 text-white transition duration-200 text-sm shadow-lg shadow-indigo-600/20 cursor-pointer";
+            }
+        }
+
+        function handleWizardPrev() {
+            if (state.wizardStep > 1) {
+                saveWizardInputValue();
+                state.wizardStep--;
+                renderGoalsWizard();
+            }
+        }
+
+        function handleWizardNext() {
+            saveWizardInputValue();
+            if (state.wizardStep < 4) {
+                state.wizardStep++;
+                renderGoalsWizard();
+            } else {
+                compileWizardGoal();
+            }
+        }
+
+        function saveWizardInputValue() {
+            const currentStepData = wizardStepsInfo[state.wizardStep - 1];
+            const val = document.getElementById('wizard-input').value;
+            state.wizardData[currentStepData.key] = val;
+        }
+
+        function compileWizardGoal() {
+            const data = state.wizardData;
+            if (!data.s.trim()) {
+                showToast(state.lang === 'en' ? "Specific goal field cannot be empty" : "කරුණාකර නිශ්චිත ඉලක්කය ඇතුළත් කරන්න");
+                return;
+            }
+
+            const newGoal = {
+                id: Date.now(),
+                title: data.s,
+                timeline: data.t,
+                actions: data.a,
+                results: data.r,
+                tasks: [
+                    { id: 1, text: state.lang === 'en' ? 'Initialize project blueprint (ප්‍රාරම්භක සැලසුම)' : 'ප්‍රාරම්භක සැලසුම', completed: false },
+                    { id: 2, text: state.lang === 'en' ? 'Track intermediate process timeline (රළු කාල සීමා පරීක්ෂාව)' : 'රළු කාල සීමා පරීක්ෂාව', completed: false },
+                    { id: 3, text: state.lang === 'en' ? 'Deploy and measure final growth results (වර්ධන ප්‍රතිඵල ඇගයීම)' : 'වර්ධන ප්‍රතිඵල ඇගයීම', completed: false }
+                ]
+            };
+
+            state.goals.push(newGoal);
+            localStorage.setItem('ev_goals', JSON.stringify(state.goals));
+
+            state.wizardStep = 1;
+            state.wizardData = { s: '', t: '', a: '', r: '' };
+            
+            renderGoalsWizard();
+            renderGoalsList();
+            showToast(state.lang === 'en' ? "STAR goal framework saved to profile blueprint!" : "නව STAR ඉලක්කය සාර්ථකව එකතු කරන ලදී");
+            playChime();
+        }
+
+        function renderGoalsList() {
+            const container = document.getElementById('goals-list-container');
+            const countDisplay = document.getElementById('goal-count-display');
+            
+            countDisplay.textContent = state.lang === 'en' 
+                ? `${state.goals.length} active STAR goals` 
+                : `ක්‍රියාකාරී STAR ඉලක්ක ${state.goals.length} ක් ඇත`;
+
+            if (state.goals.length === 0) {
+                container.innerHTML = `
+                    <div class="h-48 flex flex-col justify-center items-center text-center border border-dashed border-slate-800 rounded-xl p-4">
+                        <span class="p-3 bg-slate-950/80 text-slate-500 rounded-full mb-3">
+                            <svg class="w-6 h-6 fill-none stroke-current" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                        </span>
+                        <p class="text-xs sm:text-sm text-slate-400">
+                            ${state.lang === 'en' ? 'No active STAR goals in archive. Use the STAR Architect to configure one.' : 'කිසිදු ක්‍රියාකාරී STAR ඉලක්කයක් නොමැත. ඉහත මෙවලම භාවිතයෙන් ඉලක්කයක් සාදන්න.'}
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = '';
+            state.goals.forEach(goal => {
+                const doneCount = goal.tasks.filter(t => t.completed).length;
+                const progressRatio = Math.round((doneCount / goal.tasks.length) * 100);
+
+                html += `
+                    <div class="bg-slate-950/85 border border-slate-800/80 p-5 rounded-xl space-y-4 hover:border-slate-700/60 transition duration-200">
+                        <div class="flex justify-between items-start gap-4">
+                            <div>
+                                <h3 class="text-sm sm:text-base font-bold text-slate-100">${goal.title}</h3>
+                                <div class="flex flex-wrap gap-2 mt-2">
+                                    <span class="text-[9px] font-bold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded border border-amber-500/10">Timeline: ${goal.timeline}</span>
+                                    <span class="text-[9px] font-bold text-blue-400 bg-blue-400/10 px-2 py-0.5 rounded border border-blue-500/10">Actions: ${goal.actions}</span>
+                                    <span class="text-[9px] font-bold text-rose-400 bg-rose-400/10 px-2 py-0.5 rounded border border-rose-500/10">Result: ${goal.results}</span>
+                                </div>
+                            </div>
+                            <button onclick="deleteGoal(${goal.id})" class="p-1 rounded text-slate-500 hover:text-rose-500 transition duration-150 cursor-pointer" title="Delete Goal">
+                                <svg class="w-4 h-4 fill-none stroke-current" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                            </button>
+                        </div>
+
+                        <!-- Progress Section -->
+                        <div class="space-y-1">
+                            <div class="flex justify-between text-[10px] font-bold text-slate-400">
+                                <span>Core Milestones Completion</span>
+                                <span>${progressRatio}%</span>
+                            </div>
+                            <div class="w-full bg-slate-900 h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-gradient-to-r from-teal-400 to-indigo-500 h-1.5 rounded-full transition-all duration-300" style="width: ${progressRatio}%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Milestone Checklists -->
+                        <div class="space-y-1.5 border-t border-slate-900/80 pt-3">
+                            ${goal.tasks.map(task => `
+                                <div class="flex items-center gap-2 text-xs">
+                                    <input type="checkbox" ${task.completed ? 'checked' : ''} onclick="toggleGoalTask(${goal.id}, ${task.id})" class="rounded border-slate-800 text-teal-500 focus:ring-0 cursor-pointer">
+                                    <span class="${task.completed ? 'line-through text-slate-500' : 'text-slate-300'}">${task.text}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function toggleGoalTask(goalId, taskId) {
+            state.goals = state.goals.map(g => {
+                if (g.id === goalId) {
+                    g.tasks = g.tasks.map(t => {
+                        if (t.id === taskId) t.completed = !t.completed;
+                        return t;
+                    });
+                }
+                return g;
+            });
+            localStorage.setItem('ev_goals', JSON.stringify(state.goals));
+            renderGoalsList();
+        }
+
+        function deleteGoal(goalId) {
+            state.goals = state.goals.filter(g => g.id !== goalId);
+            localStorage.setItem('ev_goals', JSON.stringify(state.goals));
+            renderGoalsList();
+            showToast(state.lang === 'en' ? "STAR goal vector eliminated" : "ඉලක්කය සාර්ථකව ඉවත් කරන ලදී");
+        }
+
+
+        // ==============================================
+        // MODULE 3: MINDFULNESS & MEDITATION ENGINE
+        // ==============================================
+        function setMedTimer(minutes) {
+            if (state.medRunning) return;
+            state.medTimeLeft = minutes * 60;
+            updateTimerDisplay();
+            
+            [2, 5, 10].forEach(m => {
+                const btn = document.getElementById(`preset-${m}`);
+                if (m === minutes) {
+                    btn.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition duration-200 border border-teal-500/30 bg-teal-500/10 text-teal-400";
+                } else {
+                    btn.className = "px-3.5 py-1.5 rounded-lg text-xs font-bold transition duration-200 border border-slate-800 bg-slate-950 hover:bg-slate-800 hover:text-slate-200 text-slate-400";
+                }
+            });
+        }
+
+        function toggleMedTimer() {
+            const btn = document.getElementById('btn-med-start');
+            if (state.medRunning) {
+                clearInterval(state.medTimer);
+                clearInterval(state.breathCycleTimer);
+                state.medRunning = false;
+                state.medPhase = 'idle';
+                
+                btn.textContent = state.lang === 'en' ? 'Resume Session' : 'නැවත පටන්ගන්න';
+                btn.className = "flex-1 max-w-[150px] py-3 rounded-xl font-bold bg-teal-500 text-slate-950 hover:bg-teal-400 transition-all duration-200 shadow-md cursor-pointer";
+                
+                resetBreathingBubble();
+                showToast(state.lang === 'en' ? "Session paused" : "භාවනා සැසිය තාවකාලිකව නවතා ඇත");
+            } else {
+                state.medRunning = true;
+                state.medPhase = 'breathing';
+                
+                btn.textContent = state.lang === 'en' ? 'Pause Session' : 'නවතන්න';
+                btn.className = "flex-1 max-w-[150px] py-3 rounded-xl font-bold bg-amber-500 text-slate-950 hover:bg-amber-400 transition-all duration-200 shadow-md cursor-pointer";
+                
+                state.medTimer = setInterval(decrementMedTimer, 1000);
+                startBreathingCycle();
+                showToast(state.lang === 'en' ? "Meditation timer active" : "භාවනා සැසිය ක්‍රියාත්මකයි");
+            }
+        }
+
+        function resetMedTimer() {
+            clearInterval(state.medTimer);
+            clearInterval(state.breathCycleTimer);
+            state.medRunning = false;
+            state.medPhase = 'idle';
+            state.medTimeLeft = 600;
+            
+            const btn = document.getElementById('btn-med-start');
+            btn.textContent = state.lang === 'en' ? 'Start Session' : 'ආරම්භ කරන්න';
+            btn.className = "flex-1 max-w-[150px] py-3 rounded-xl font-bold bg-teal-500 text-slate-950 hover:bg-teal-400 transition-all duration-200 shadow-md cursor-pointer";
+            
+            updateTimerDisplay();
+            resetBreathingBubble();
+            setMedTimer(10);
+        }
+
+        function decrementMedTimer() {
+            if (state.medTimeLeft > 0) {
+                state.medTimeLeft--;
+                updateTimerDisplay();
+            } else {
+                clearInterval(state.medTimer);
+                clearInterval(state.breathCycleTimer);
+                state.medRunning = false;
+                state.medPhase = 'idle';
+                
+                const btn = document.getElementById('btn-med-start');
+                btn.textContent = state.lang === 'en' ? 'Start Session' : 'ආරම්භ කරන්න';
+                
+                playChime();
+                resetBreathingBubble();
+                showToast(state.lang === 'en' ? "Meditation session complete" : "භාවනා සැසිය සාර්ථකව නිම කරන ලදී");
+            }
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(state.medTimeLeft / 60);
+            const secs = state.medTimeLeft % 60;
+            const display = document.getElementById('med-display');
+            display.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // REFINED BREATH VISUALIZER DRIVER WITH LIQUID MORPH AND DYNAMIC WAVE EMISSIONS
+        function startBreathingCycle() {
+            const bubble = document.getElementById('breathing-bubble');
+            const label = document.getElementById('breathing-text');
+            const counter = document.getElementById('breathing-timer');
+            const outerRing1 = document.getElementById('ring-outer-1');
+            const outerRing2 = document.getElementById('ring-outer-2');
+            
+            const cycles = [
+                { text_en: "Inhale", text_si: "හුස්ම ගන්න", colorClass: "from-emerald-500/30 to-teal-500/40 border-emerald-400 shadow-[0_0_50px_rgba(16,185,129,0.3)] scale-125", ringColor: "border-emerald-500/20", duration: 4000 },
+                { text_en: "Hold", text_si: "තබා ගන්න", colorClass: "from-indigo-600/30 to-blue-500/40 border-indigo-400 shadow-[0_0_50px_rgba(99,102,241,0.3)] scale-130", ringColor: "border-indigo-500/20", duration: 4000 },
+                { text_en: "Exhale", text_si: "හුස්ම හෙළන්න", colorClass: "from-purple-600/20 to-pink-500/30 border-purple-400 shadow-[0_0_50px_rgba(168,85,247,0.2)] scale-100", ringColor: "border-purple-500/10", duration: 4000 },
+                { text_en: "Hold", text_si: "තබා ගන්න", colorClass: "from-slate-800/40 to-slate-900/50 border-slate-600 shadow-[0_0_20px_rgba(148,163,184,0.1)] scale-95", ringColor: "border-slate-700/10", duration: 4000 }
+            ];
+
+            let index = 0;
+            let secondsLeft = 4;
+
+            const runCycle = () => {
+                const c = cycles[index];
+                label.textContent = state.lang === 'en' ? c.text_en : c.text_si;
+                secondsLeft = 4;
+                counter.textContent = `${secondsLeft}s`;
+
+                // Update liquid orb theme colors and scale dynamically
+                bubble.className = `liquid-orb w-48 h-48 bg-gradient-to-tr ${c.colorClass} border-2 flex flex-col items-center justify-center text-center backdrop-blur-md relative transition-all duration-[4000ms] ease-in-out`;
+                
+                // Set custom ring colors matching breathing state
+                outerRing1.className = `absolute w-72 h-72 rounded-full border ${c.ringColor} pointer-events-none transition-all duration-1000`;
+                outerRing2.className = `absolute w-60 h-60 rounded-full border ${c.ringColor} pointer-events-none transition-all duration-1000`;
+
+                index = (index + 1) % cycles.length;
+            };
+
+            const secondCountdown = () => {
+                if (secondsLeft > 1) {
+                    secondsLeft--;
+                    counter.textContent = `${secondsLeft}s`;
+                }
+            };
+
+            runCycle();
+            state.breathCycleTimer = setInterval(() => {
+                runCycle();
+            }, 4000);
+
+            // Synchronize secondary sub-second countdown
+            const subTimer = setInterval(() => {
+                if (!state.medRunning) {
+                    clearInterval(subTimer);
+                    return;
+                }
+                secondCountdown();
+            }, 1000);
+        }
+
+        function resetBreathingBubble() {
+            const bubble = document.getElementById('breathing-bubble');
+            const label = document.getElementById('breathing-text');
+            const counter = document.getElementById('breathing-timer');
+            
+            bubble.className = "liquid-orb w-48 h-48 bg-gradient-to-tr from-teal-500/20 to-indigo-500/30 border-2 border-teal-400/50 flex flex-col items-center justify-center text-center shadow-[0_0_50px_rgba(20,184,166,0.15)] transition-all duration-[4000ms] ease-in-out relative backdrop-blur-md";
+            label.textContent = state.lang === 'en' ? 'Prepare' : 'සූදානම් වන්න';
+            counter.textContent = "4s";
+        }
+
+
+        // ==========================================
+        // MODULE 4: TIME ALIGNMENT SUITE ENGINE
+        // ==========================================
+        function renderMatrix() {
+            const lists = {
+                1: document.getElementById('quadrant-1-list'),
+                2: document.getElementById('quadrant-2-list'),
+                3: document.getElementById('quadrant-3-list'),
+                4: document.getElementById('quadrant-4-list')
+            };
+
+            for (let q in lists) {
+                lists[q].innerHTML = '';
+            }
+
+            state.matrixTasks.forEach(task => {
+                const checkedClass = task.completed ? 'line-through text-slate-500' : 'text-slate-200';
+                const div = document.createElement('div');
+                div.className = "flex items-center justify-between gap-2 bg-slate-900/80 px-2.5 py-1.5 rounded-lg border border-slate-800/80";
+                div.innerHTML = `
+                    <div class="flex items-center gap-2 overflow-hidden">
+                        <input type="checkbox" ${task.completed ? 'checked' : ''} onclick="toggleMatrixTask(${task.id})" class="rounded border-slate-800 text-amber-500 focus:ring-0 cursor-pointer">
+                        <span class="text-xs truncate ${checkedClass}">${task.text}</span>
+                    </div>
+                    <button onclick="deleteMatrixTask(${task.id})" class="text-slate-600 hover:text-rose-500 transition duration-150 cursor-pointer">
+                        <svg class="w-3.5 h-3.5 fill-none stroke-current" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                    </button>
+                `;
+                lists[task.quadrant].appendChild(div);
+            });
+
+            for (let q in lists) {
+                if (lists[q].children.length === 0) {
+                    lists[q].innerHTML = `<span class="text-[10px] text-slate-600 italic block text-center py-4">No tasks configured</span>`;
+                }
+            }
+        }
+
+        function addMatrixTask() {
+            const input = document.getElementById('matrix-input');
+            const quadSelect = document.getElementById('matrix-select-quad');
+            
+            if (!input.value.trim()) {
+                showToast(state.lang === 'en' ? "Please enter a valid task description" : "කරුණාකර කාර්යයක් ඇතුළත් කරන්න");
+                return;
+            }
+
+            const newTask = {
+                id: Date.now(),
+                text: input.value,
+                quadrant: parseInt(quadSelect.value),
+                completed: false
+            };
+
+            state.matrixTasks.push(newTask);
+            localStorage.setItem('ev_matrix', JSON.stringify(state.matrixTasks));
+            
+            input.value = '';
+            renderMatrix();
+            showToast(state.lang === 'en' ? "Task anchored inside Priority matrix" : "කාර්යය සාර්ථකව ප්‍රමුඛතා න්‍යාසයට ඇතුළත් කරන ලදී");
+        }
+
+        function toggleMatrixTask(id) {
+            state.matrixTasks = state.matrixTasks.map(t => {
+                if (t.id === id) t.completed = !t.completed;
+                return t;
+            });
+            localStorage.setItem('ev_matrix', JSON.stringify(state.matrixTasks));
+            renderMatrix();
+        }
+
+        function deleteMatrixTask(id) {
+            state.matrixTasks = state.matrixTasks.filter(t => t.id !== id);
+            localStorage.setItem('ev_matrix', JSON.stringify(state.matrixTasks));
+            renderMatrix();
+        }
+
+        // POMODORO ENGINE CONTROLS
+        function setPomoMode(mode) {
+            if (state.pomoRunning) return;
+            state.pomoMode = mode;
+            state.pomoTimeLeft = mode === 'work' ? 1500 : 300;
+            
+            const workBtn = document.getElementById('pomo-mode-work');
+            const breakBtn = document.getElementById('pomo-mode-break');
+            const badge = document.getElementById('pomo-session-badge');
+
+            if (mode === 'work') {
+                workBtn.className = "flex-1 py-1 rounded-lg text-xs font-bold transition duration-200 bg-amber-500/20 text-amber-400 border border-amber-500/20";
+                breakBtn.className = "flex-1 py-1 rounded-lg text-xs font-bold transition duration-200 text-slate-400 hover:text-slate-200";
+                badge.textContent = state.lang === 'en' ? 'Active Sprint' : 'වැඩ කාලය';
+            } else {
+                breakBtn.className = "flex-1 py-1 rounded-lg text-xs font-bold transition duration-200 bg-amber-500/20 text-amber-400 border border-amber-500/20";
+                workBtn.className = "flex-1 py-1 rounded-lg text-xs font-bold transition duration-200 text-slate-400 hover:text-slate-200";
+                badge.textContent = state.lang === 'en' ? 'Intermission Break' : 'විවේක කාලය';
+            }
+
+            updatePomoDisplay();
+        }
+
+        function togglePomoTimer() {
+            const btn = document.getElementById('btn-pomo-start');
+            if (state.pomoRunning) {
+                clearInterval(state.pomoTimer);
+                state.pomoRunning = false;
+                btn.textContent = state.lang === 'en' ? 'Resume' : 'නැවත පටන්ගන්න';
+                showToast(state.lang === 'en' ? "Sprint paused" : "පොමොඩෝරෝ කාල පාලකය තාවකාලිකව නවතා ඇත");
+            } else {
+                state.pomoRunning = true;
+                btn.textContent = state.lang === 'en' ? 'Pause' : 'නවතන්න';
+                state.pomoTimer = setInterval(decrementPomoTimer, 1000);
+                showToast(state.lang === 'en' ? "Focus sprint started" : "පොමොඩෝරෝ අවධානය යොමු කිරීම ආරම්භ විය");
+            }
+        }
+
+        function resetPomoTimer() {
+            clearInterval(state.pomoTimer);
+            state.pomoRunning = false;
+            
+            const btn = document.getElementById('btn-pomo-start');
+            btn.textContent = state.lang === 'en' ? 'Start' : 'ආරම්භ කරන්න';
+            
+            setPomoMode(state.pomoMode);
+        }
+
+        function decrementPomoTimer() {
+            if (state.pomoTimeLeft > 0) {
+                state.pomoTimeLeft--;
+                updatePomoDisplay();
+            } else {
+                clearInterval(state.pomoTimer);
+                state.pomoRunning = false;
+                playChime();
+                
+                const btn = document.getElementById('btn-pomo-start');
+                btn.textContent = state.lang === 'en' ? 'Start' : 'ආරම්භ කරන්න';
+
+                if (state.pomoMode === 'work') {
+                    showToast(state.lang === 'en' ? "Focus session completed. Rest break active." : "වැඩ කාලය සාර්ථකව නිම විය. විවේක ගැනීමට සූදානම් වන්න.");
+                    setPomoMode('break');
+                } else {
+                    showToast(state.lang === 'en' ? "Break complete. Re-align next focus sprint!" : "විවේක කාලය නිම විය. නැවත අවධානය යොමු කරන්න!");
+                    setPomoMode('work');
+                }
+            }
+        }
+
+        function updatePomoDisplay() {
+            const mins = Math.floor(state.pomoTimeLeft / 60);
+            const secs = state.pomoTimeLeft % 60;
+            const display = document.getElementById('pomo-display');
+            display.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+
+        // ==========================================
+        // MODULE 5: HABIT STREAKS & REFLECTIONS
+        // ==========================================
+        function renderHabits() {
+            const container = document.getElementById('habits-list-container');
+            let html = '';
+            
+            state.checklist.forEach(item => {
+                const completed = item.completed;
+                const text = state.lang === 'en' ? item.text_en : item.text_si;
+                const btnClass = completed 
+                    ? 'bg-violet-600 text-white border-violet-500' 
+                    : 'bg-slate-950 hover:bg-slate-900 text-slate-400 border-slate-800 hover:text-slate-200';
+
+                html += `
+                    <div class="flex items-center gap-3.5 p-3.5 bg-slate-950/80 border border-slate-800 rounded-xl hover:border-slate-700/60 transition duration-150">
+                        <button onclick="toggleChecklistItem(${item.id})" class="w-6 h-6 rounded-full border flex items-center justify-center transition-all duration-200 cursor-pointer shrink-0 ${btnClass}">
+                            <svg class="w-3.5 h-3.5 fill-none stroke-current" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" /></svg>
+                        </button>
+                        <span class="text-xs sm:text-sm font-semibold transition-all duration-150 ${completed ? 'line-through text-slate-500' : 'text-slate-200'}">${text}</span>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        function toggleChecklistItem(id) {
+            state.checklist = state.checklist.map(item => {
+                if (item.id === id) item.completed = !item.completed;
+                return item;
+            });
+            localStorage.setItem('ev_checklist', JSON.stringify(state.checklist));
+            renderHabits();
+            playChime();
+        }
+
+        // Expanded database containing 10 rich cognitive development thoughts in English and Sinhala
+        const affirmations = {
+            en: [
+                "I am deliberate with my time and mindful of my focus.",
+                "Setbacks are fuel for analytical realignment and focus restarts.",
+                "Deep concentration is a muscle built through calm, structured repetitions.",
+                "My growth vector matches the consistency of my micro-habits.",
+                "Complexity is systematically broken down into bite-sized milestones.",
+                "I possess the cognitive clarity to filter out distraction and noise.",
+                "Discipline is choosing what I want most over what I want now.",
+                "I am the architect of my habits, built step-by-step with structural integrity.",
+                "Patience and persistence are the cornerstones of self-mastery.",
+                "Every challenge is a diagnostic test pointing toward my next evolution."
+            ],
+            si: [
+                "මම මාගේ කාලය ඉතා ඥානාන්විතව සහ සැලසුම් සහගතව කළමනාකරණය කරමි.",
+                "අසාර්ථකත්වයන් යනු වඩාත් ශක්තිමත්ව ඉදිරියට යාමට ලැබෙන අනඟි අවස්ථාවන්ය.",
+                "සන්සුන් මනස මගේ ශක්තිය සහ අවධානය ඒකරාශී කරන ප්‍රභවයයි.",
+                "දෛනිකව සිදුකරන කුඩා ක්‍රියාවන් මගින් මාගේ ජීවිතය සාර්ථකත්වයට මෙහෙයවයි.",
+                "ඕනෑම විශාල ඉලක්කයක් සරල පියවරයන් ඔස්සේ මට සාක්ෂාත් කරගත හැකිය.",
+                "බාහිර බාධා කිරීම් සහ ශබ්ද මඟහරවා ගැනීමට අවශ්‍ය මානසික පැහැදිලි බව මා සතුය.",
+                "විනය යනු මේ මොහොතේ මට අවශ්‍ය දේට වඩා මගේ දිගුකාලීන ඉලක්ක තෝරා ගැනීමයි.",
+                "මම මගේ පුරුදුවල නිර්මාණකරු වන අතර, ඒවා පියවරෙන් පියවර ශක්තිමත්ව ගොඩනඟමි.",
+                "ඉවසීම සහ නොපසුබට උත්සාහය ස්වයං පාලනයේ ප්‍රධාන මුල්ගල් වේ.",
+                "සෑම අභියෝගයක්ම මගේ මීළඟ පරිණාමය පෙන්වන රෝග විනිශ්චය පරීක්ෂණයකි."
+            ]
+        };
+
+        let affIdx = 0;
+
+        function rotateAffirmation() {
+            affIdx = (affIdx + 1) % affirmations[state.lang].length;
+            const display = document.getElementById('affirmation-display');
+            display.textContent = `"${affirmations[state.lang][affIdx]}"`;
+        }
+
+        function renderReflectionPanel() {
+            // Decoupled from DOM since input logs are removed
+        }
+
+        function saveReflection() {
+            // Decoupled from DOM
+        }
+
+        // INITIALIZATION ENTRYPOINT
+        window.onload = function() {
+            switchLanguage('en');
+            switchTab('personality');
+        };
+    </script>
+</body>
+</html>
+```
+eof
